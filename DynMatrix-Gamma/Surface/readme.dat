@@ -1,2 +1,2 @@
 1. dyn.dat is from QE/dynmat.x 
-2. fc.dat is output which will be used as the input of next step in the folder "sumrule"
+2. fc.dat is output which will be used as the input of next step in the folder "AddAtoms"
