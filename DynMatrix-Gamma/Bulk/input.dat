@@ -1,0 +1,4 @@
+2	! number of elements
+12	! number of atoms
+.T.	! sumrule
+1	!index of the first atom after reorder
