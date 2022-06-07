@@ -1,6 +1,7 @@
-1. INPUT: dyn.dat is fc.dat of last step.
+1. INPUT: dyn.dat is fc.dat of last step. In addition, please add the mass of atoms in the dyn.dat on top manually. Reference: example-dyn.dat. 
+Make sure the order and indices of elements before the coordinates are matched.
 2. INPUT: FC_3Nx3N-bulk-nint and FC_3Nx3N-cnct_d-nint. 
 Two files are used to add more atoms at the bottom. They are from the folder "bulk".
 If you have 5L SiC, you should set start = 11 in the input.dat of "bulk" folder. 
-3. OUTPUT: fc.dat. Do change the element indices in it. 
+3. OUTPUT: fc.dat. 
 Atoms are reordered according to theri z coordinate.
