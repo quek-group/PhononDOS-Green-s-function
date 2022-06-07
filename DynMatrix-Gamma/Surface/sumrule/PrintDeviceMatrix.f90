@@ -6,7 +6,7 @@
 	program main
 	implicit none
 	INTEGER :: i, j,k, num7,num8,p,q,atm1,nint,n_cnct,n_diff
-	INTEGER :: n_elmt,n_atm, prt_n_atm,index_row,index_col
+	INTEGER :: n_elmt,n_atm, n_mt, prt_n_atm,index_row,index_col
 	REAL*8 :: para(6), num1, num2, num3, num4, num5, num6,sum
 	REAL*8 :: latt_vect(3:3)
 	REAL*8, allocatable :: mass(:), coord(:,:)
@@ -21,6 +21,7 @@
 	open(21, file = 'input.dat', status = 'unknown')
 	read (21,*) n_elmt
 	read (21,*) n_atm
+	read (21,*) n_mt
 	read (21,*) prt_n_atm
 	read (21,*) asr
 	read (21,*) n_cnct
@@ -130,7 +131,6 @@ close(22)
 	        index_col = q+3*(j-1)
 	        dyn_matrix(index_row,index_col) = fc_const_ord(i,j,p,q)/ &
 	          	sqrt(mass(elmt_sorted(i))*mass(elmt_sorted(j)))
-!write (*,*) mass(elmt_sorted(i))
 	      enddo
 	    enddo
 	  enddo
@@ -139,26 +139,6 @@ close(22)
 !write(6,*) force_matrix(4,4),force_matrix(7,1),force_matrix(1,7),force_matrix(71,71)
 
 
-!Write fc_con vs atoms
-
-	!open(23, file = "dyn_vs_atoms1n.dat", action = 'WRITE')
-	!atm1 = 1
-	!do i = 1,n_atm
-	!  write(23,*) atm1, i, &
-	!              ABS(REAL(fc_const_ord(atm1,i,1,1))),ABS(REAL(fc_const_ord(atm1,i,2,2))),ABS(REAL(fc_const_ord(atm1,i,3,3))), &
-	!              ABS(REAL(fc_const_ord(atm1,i,1,2))),ABS(REAL(fc_const_ord(atm1,i,2,3))),ABS(REAL(fc_const_ord(atm1,i,3,1)))
-	!enddo
-	!close(23)
-
-
-
-!write the whole dynamic matrix
-	!open(23, file = "dyn_3Nx3N.dat", action = 'WRITE')
-
-	!do i = 1,3*n_atm
-	!    write(23,*) (REAL(dyn_matrix(i,j)),AIMAG(dyn_matrix(i,j)),j = 1,3*n_atm)  !
-	!enddo
-	!close(23)
 
 
 
@@ -188,30 +168,47 @@ close(22)
 
 ! sumrule for prt part
 
-
 	if (asr) then
 	  do p = 1,3
 	    do q = 1,3
-	      do i = 1,n_atm
-	        if (n_atm-i .ge. 4) then
+	      if (n_atm-n_mt .ge. n_cnct) then
+
+	        do i = 1,n_atm-n_cnct
 	          sum = 0.d0
 	          do j = 1,n_atm
 	            sum = sum + fc_const_ord(i,j,p,q)
 	            fc_const_prt(i,j,p,q) = fc_const_ord(i,j,p,q)
 	          enddo
 	          fc_const_prt(i,i,p,q) = fc_const_prt(i,i,p,q) - sum
-	        else
+
+	        enddo
+	        do i = n_atm-n_cnct+1, n_atm
+	          do j = 1,n_atm
+	            sum = sum + fc_const_ord(i,j,p,q)+fc_cnct(i-(n_atm-n_cnct),j,p,q)
+	            fc_const_prt(i,j,p,q) = fc_const_ord(i,j,p,q)
+	          enddo
+                  fc_const_prt(i,i,p,q) = fc_const_prt(i,i,p,q) - sum
+	         enddo
+
+	       else
+	        do i = 1,n_mt
 	          sum = 0.d0
 	          do j = 1,n_atm
 	            sum = sum + fc_const_ord(i,j,p,q)
 	            fc_const_prt(i,j,p,q) = fc_const_ord(i,j,p,q)
 	          enddo
-	          do k = 1,4
-	             sum = sum + fc_cnct(n_cnct-n_atm+i,k,p,q)
+	          fc_const_prt(i,i,p,q) = fc_const_prt(i,i,p,q) - sum
+	        enddo
+                do i = n_mt+1, n_atm
+	          sum = 0.d0
+	          do j = 1,n_atm
+	            sum = sum + fc_const_ord(i,j,p,q)+fc_cnct(n_cnct-(n_atm-n_mt)+i,k,p,q)
+	            fc_const_prt(i,j,p,q) = fc_const_ord(i,j,p,q)
 	          enddo
 	          fc_const_prt(i,i,p,q) = fc_const_prt(i,i,p,q) - sum
-	          endif
-	      enddo
+                 enddo
+	        endif
+
 	    enddo
 	  enddo
 	endif
