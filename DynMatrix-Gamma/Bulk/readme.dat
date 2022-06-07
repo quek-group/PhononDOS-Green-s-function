@@ -1,4 +1,4 @@
 1. Generate dyn_3Nx3N-bulk-nint.dat; dyn_3Nx3N-connection-nint.dat. These are used in Green's function code.
 2. Generate FC_3Nx3N-bulk-nint.dat; FC_3Nx3N-cnct_d-nint.dat. These are used in "AddAtoms" and "sumrule".
 3. Search "nint" in the code and change its value as you need. 
-It means in the output dynamical matrice, interatomic force constant of nint nearest SiC layers are included. Be careful about the peridic boundary.
+It means in the output dynamical matrix, interatomic interactions of nint nearest SiC layers are included. Be careful about the peridic boundary.
