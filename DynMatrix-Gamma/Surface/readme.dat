@@ -2,6 +2,16 @@
 Input: dyn.dat is from QE/dynmat.x ; input.dat
 Ouput: fc.dat is output which will be used as the input of next step in the folder "AddAtoms"
 
+Purpose: delete the bottom atoms you don't need. For instance, the H atoms used for passivation. 
+
 2. Go to the folder "AddAtoms" 
+Prepare input files and input.dat.
+Compile AddSiC2.0.f90 and run it.
+
+Purpose: Reorder the atoms according to z coordinate; add more atoms you need. For example, if you want to include more atoms in the substrate in, you can use this.
 
 3. Go to the folder "sumrule" get output
+Prepare input files and input.dat.
+Compile PrintDeviceMatrix.f90 and run it.
+
+Purpose: Do sumrule; print out files needed for GF DOS calculations: dyn_prt_sumrule.dat. Rename it as dyn_3Rx3R-device.dat for Greens function DOS code.
