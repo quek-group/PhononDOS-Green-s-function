@@ -1,5 +1,5 @@
-3
-13
-3
+3 !number of elements
+13 !number of atoms in dyn.dat
+3  !number of atoms which are different from the bulk or substrate. Here, it is metal atoms.
 2  !atoms added at the bottom 
 12 !cnct dimension
