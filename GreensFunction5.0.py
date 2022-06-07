@@ -1,6 +1,6 @@
 # Please cite J. Phys. Chem. Lett. 2022, 13, 18, 4015–4020 (Shear Modes in a 2D Polar Metal) if you use this code.
 # Please prepare input files: "dyn_3Nx3N-bulk.dat",  "dyn_3Nx3N-connection.dat" and "dyn_3Rx3R-device.dat" for this code.
-# Please modify the parameters according to your system and the GF DOS you need. (12-17)
+# Please modify the parameters according to your system and the GF DOS you need. (12-17) If meet error, delete the head (first 3 lines) of this code and have a try.
 
 import numpy as np
 from numpy import ndarray
