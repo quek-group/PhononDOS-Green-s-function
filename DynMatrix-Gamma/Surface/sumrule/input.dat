@@ -1,6 +1,0 @@
-3 ! number of elements
-14 ! number of atoms
-2  ! number of metal atoms
-14  ! number of atoms you want to print out
-.T. ! sumrule
-12 !dimension of connection matrix which is from bulk system
