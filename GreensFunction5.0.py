@@ -2,7 +2,6 @@
 # Please prepare input files: "dyn_3Nx3N-bulk.dat",  "dyn_3Nx3N-connection.dat" and "dyn_3Rx3R-device.dat" for this code.
 # Please modify the parameters according to your system and the GF DOS you need. (12-17)
 
-
 import numpy as np
 from numpy import ndarray
 from numpy.linalg import inv
@@ -15,6 +14,7 @@ omega = 0         # start frequency in GF DOS. unit:Ry
 omega_max = 0.00118464979      # final frequency in GF DOS. unit:Ry 
 omega_step = 0.0000001         # step size of frequency. unit: Ry
 zero = 1E-8      # the infinitesimal parameter eta. unit:Ry
+it_cycle = 40    # iterative cycle. You need to make sure your GF DOS is converged when incresing it_cycle
 
 # constant pi
 p = 3.14159265359
@@ -138,7 +138,7 @@ while omega < omega_max:
 
 
     i = 0
-    while i < 40:
+    while i < it_cycle:
         ti_sq = np.dot(ti,ti)
         ti_t_sq = np.dot(ti_t,ti_t)
         titi_t = np.dot(ti,ti_t)
