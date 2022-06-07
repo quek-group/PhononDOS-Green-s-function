@@ -1,18 +1,25 @@
-#1. Compute surface Green's function
-#2. Get phonon sel-energy
-#3. Get device's Green's function
-#4. Compyte spectra
+# Please cite J. Phys. Chem. Lett. 2022, 13, 18, 4015–4020 (Shear Modes in a 2D Polar Metal) if you use this code.
+# Please prepare input files: "dyn_3Nx3N-bulk.dat",  "dyn_3Nx3N-connection.dat" and "dyn_3Rx3R-device.dat" for this code.
+# Please modify the parameters according to your system and the GF DOS you need. (12-17)
+
 
 import numpy as np
 from numpy import ndarray
 from numpy.linalg import inv
 import math
 
-n_atm = 12
-n_atm_dvc = 14
+#parameters need to be modified as required
+n_atm = 12        # number of atoms in bulk
+n_atm_dvc = 14    # number of atoms in the device
+omega = 0         # start frequency in GF DOS. unit:Ry
+omega_max = 0.00118464979      # final frequency in GF DOS. unit:Ry 
+omega_step = 0.0000001         # step size of frequency. unit: Ry
+zero = 1E-8      # the infinitesimal parameter eta. unit:Ry
+
+# constant pi
 p = 3.14159265359
 
-#1. Compute surface Green's function
+# Compute surface Green's function
 # Read Dynamic matrix of SiC unitcell.(Computed from a 1x1x2 supercell)
 
 fr_D_bulk = open('dyn_3Nx3N-bulk.dat','r')
@@ -58,11 +65,6 @@ D_cnct=np.array(D_cnct)
 
 D_cnct_dag = D_cnct.conjugate().T
 
-#i = 0
-#while i < 35:
-#    print(D_cnct_dag[i][0])
-#    i = i+1
-
 
 # Read device dynamic matrix
 
@@ -90,13 +92,6 @@ D_dvc = (D_dvc + D_dvc_dag)/2
 
 # Construct Tdc : connection matrix between device and contact
 
-#A = [[complex(0,0) for i in range(3*n_atm)] for i in range(3*(n_atm_dvc-n_atm))]
-# Elements corresponding to interaction between Ga and bottom SiC sub is 0.
-
-#Tdc = np.vstack((A,D_cnct_dag))
-
-#Tdc_dag = Tdc.conjugate().T
-
 
 n_diff = n_atm_dvc-n_atm
 if n_diff > 0:
@@ -110,34 +105,16 @@ else :
 Tdc_dag = Tdc.conjugate().T
 
 
-#write Tnb
-##fw_Tdc = open('Tdc.dat','w')
-##
-##i = 0
-##j = 0
-##while i < 42:
-##    j = 0
-##    while j < 36:
-##        fw_Tdc.write("%20.6e %12.6ei" % (Tdc[i][j].real,Tdc[i][j].imag) )
-##        j = j+1
-##    fw_Tdc.write('\n')
-##    i = i+1
-##    #print(i)
-##fw_Tdc.close()
-
-
 #Decimation method: compute surface Green's function matrix g0,0
 
-omega = 0.00024622101664683997 # 27cm-1 -> Ry
 I = np.identity(3*n_atm)
 I2 = np.identity(3*n_atm_dvc)
-zero = 1E-11
+
 fw_spect = open('Spectra.dat','w')
 fw_dos = open('Dos.dat','w')
-#fw_spect_ori = open('Spectra-ori.dat','w')
 Ry_cm = 13.605662285137*8065.54429
 
-omega = 0
+
 
 ##D_cnct_dag: H01; D_cnct:H10
 H01 = D_cnct_dag
@@ -146,11 +123,8 @@ H01_d = D_cnct
 H00 = D_bulk
 
 
-while omega < 0.00118464979: #130 cm-1
-#while omega < 0.0018225381523347935: # 200 cm-1
-#while omega < 0.005467614457: # 600 cm-1
-#while omega < 0.009112690761673967:
-    invg0 = ((omega+zero*complex(0,1))**2)*I-H00
+while omega < omega_max: 
+    invg0 = (omega**2+zero*complex(0,1))*I-H00
     g0 = inv(invg0)
     t0 = np.dot(g0,H01_d)
     t0_t = np.dot(g0,H01)
@@ -184,25 +158,27 @@ while omega < 0.00118464979: #130 cm-1
 
         i = i+1
     
-    #Surface GF
-    g00=inv(invg0-np.dot(H01,Tmat))
-
-    #Bulk GF
+    
+    #Bulk GF 
+    #If you wan to compute the GF DOS for bulk SiC, please uncomment 164-167 and comment 171-179.
     #gb = inv(invg0 - np.dot(H01,Tmat)-np.dot(H01_d,Tmat_t))
-    #gb = inv(invg0)
     #diff = gb - gb.conjugate().T
     #A_omega = np.dot(complex(0,1), diff) #*omega
     #dos = A_omega*omega
-
+    
+    
+    #Surface GF
+    g00=inv(invg0-np.dot(H01,Tmat))
     #self energy
     Sigma = np.dot(np.dot(Tdc,g00),Tdc_dag)
     #GF of device
     Gd = inv(omega**2*I2-D_dvc-Sigma)
     Gd_dag = Gd.conjugate().T
-    #Spectra
     Diff_Gd = Gd-Gd_dag
     A_omega = np.dot(complex(0,1), Diff_Gd) #*omega
     dos = np.dot(complex(0,1), Diff_Gd)*omega
+    
+    #Spectra
     Spectra = np.trace(A_omega).real
     Dos_spect = np.trace(dos).real/p
 
@@ -210,23 +186,9 @@ while omega < 0.00118464979: #130 cm-1
     fw_spect.write("%12.6f %20.6e" % (omega_cm,Spectra))
     fw_spect.write('\n')
     fw_dos.write("%12.6f %20.6e" % (omega_cm,Dos_spect))
-    fw_dos.write('\n')
+    fw_dos.write('\n')    
 
-###No self-energy: spectra should be zero energywhere as the D_dvc matrix elements are real.
-##    Gd_ori = inv(omega**2*I2-D_dvc)
-##    print(Gd_ori)
-##    Gd_ori_dag = Gd_ori.conjugate().T
-##    Diff_Gd_ori = Gd_ori-Gd_ori_dag
-##    A_omega_ori = np.dot(complex(0,1), Diff_Gd_ori)
-##    Spectra_ori = np.trace(A_omega_ori).real
-##
-##    fw_spect_ori.write("%12.6f %20.6e" % (omega_cm,Spectra_ori))
-##    fw_spect_ori.write('\n')
-    
-    
-    #omega = omega + 0.000005
-    #omega = omega + 1
-    omega = omega + 0.0000001
+    omega = omega + omega_step
 
 
 fw_spect.close()
