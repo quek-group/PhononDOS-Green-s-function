@@ -188,6 +188,7 @@ close(22)
 
 ! sumrule for prt part
 
+
 	if (asr) then
 	  do p = 1,3
 	    do q = 1,3
