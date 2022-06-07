@@ -11,7 +11,7 @@ dyn_3Nx3N-connection: upper triangular matrix, containing interactions between a
 
 
 2. INPUT: dyn_3Rx3R-device.dat is from the folder "surface"
-format: 3Rx3R matrix.
+format: 3Rx3R matrix.R is the number of atoms in the surface/device region.
 
 4. Some parameters need to be given in the code: 1> n_atm(number of atom in bulk and connection maxtrices, same); n_atm_dvc (number of atoms in device/surface); zero(positive infinitesimal parameter); omega, omega_max and omega_step (frequencies of the GF DOS); it_cycle(number of iterative cycle)
 5. Module load numpy.
