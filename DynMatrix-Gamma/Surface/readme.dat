@@ -1,4 +1,7 @@
-1. dyn.dat is from QE/dynmat.x 
-2. fc.dat is output which will be used as the input of next step in the folder "AddAtoms"
-3. Go to the folder "AddAtoms" get output
-4. Then Go to the folder "sumrule" get output
+1. Compile the code readDYN.f90 and run it.
+Input: dyn.dat is from QE/dynmat.x ; input.dat
+Ouput: fc.dat is output which will be used as the input of next step in the folder "AddAtoms"
+
+2. Go to the folder "AddAtoms" 
+
+3. Go to the folder "sumrule" get output
