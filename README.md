@@ -5,7 +5,7 @@ How to use the code:
 1. INPUT: example-dyn_3Nx3N-bulk.dat and example-dyn_3Nx3N-connection.dat are from the folder "DynMatrix-Gamma/bulk"
 
 format: 
-1> dyn_3Nx3N-bulk.dat**(D00 in the paper(see SI Section S2))**
+1> dyn_3Nx3N-bulk.dat **(D00 in the paper(see SI Section S2))**
 dynamical matrix elements between atoms within one unitcell without peridic boundary. 
 3Nx3N matrix. N is the number of atoms; 3 refers to in x, y and z. Each element is FC_pi,qj/sqrt(M_p * M_q), where FC_pi,qj is the force constant between atom p (move along i) and atom q (move along j). i, j = x,y,z.  FC_pi,qj has the unit of Ry/bohr which is directly from .dyn file computed by QuantumESPRESSO.
 
