@@ -1,7 +1,7 @@
 # PhononDOS-Green-s-function
 cite: J. Phys. Chem. Lett. 2022, 13, 18, 4015–4020
-How to use the code:
 -------------------
+**How to use the code:**
 1. INPUT: example-dyn_3Nx3N-bulk.dat and example-dyn_3Nx3N-connection.dat are from the folder "DynMatrix-Gamma/bulk"
 
 format: 
