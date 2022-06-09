@@ -2,6 +2,9 @@
 cite: J. Phys. Chem. Lett. 2022, 13, 18, 4015–4020
 -------------------
 **How to use the code:**
+
+Note: this branch is still under revision and development. Please check back later!
+
 1. INPUT: example-dyn_3Nx3N-bulk.dat and example-dyn_3Nx3N-connection.dat are from the folder "DynMatrix-Gamma/bulk"
 
 1> **dyn_3Nx3N-bulk.dat** **(D00 in the paper(see SI Section S2))**
