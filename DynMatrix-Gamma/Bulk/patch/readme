@@ -1,4 +1,4 @@
 printIFCs.patch is a patch for QE6.3. It is applied to the script rigid.f90. Using it, 
 interatomic force constant matrix elements after sumrule are printed out in IFC_sumrule.dat.
 
-After patch the QE6.3, run dynmat.x to get IFC_sumrule.dat.
+After recompile the QE6.3 using this patch, run dynmat.x to get IFC_sumrule.dat.
