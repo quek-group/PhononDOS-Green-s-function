@@ -15,3 +15,8 @@ Prepare input files and input.dat.
 Compile PrintDeviceMatrix.f90 and run it.
 
 Purpose: Do sumrule; print out files needed for GF DOS calculations: dyn_prt_sumrule.dat. Rename it as dyn_3Rx3R-device.dat for Greens function DOS code.
+
+
+To compile and run a fortran code:
+$gfortran -o name.x name.f90
+$./name.x
